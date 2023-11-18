@@ -18,11 +18,11 @@ public class JwtService {
 
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
-        final Claims claims = extractClaim(token);
+        final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
-    public String extractUserEmail(String token) {
-        return null;
+    public String extractUserName(String token) {
+        return extractClaim(token,Claims::getSubject);
     }
 
     private Claims extractAllClaims(String token) {
