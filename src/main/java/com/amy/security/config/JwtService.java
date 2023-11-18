@@ -36,8 +36,8 @@ public class JwtService {
     }
 
     public Boolean isTokenValid(String token,UserDetails userDetails){//se necesita validar que el token pertenece al dueño del user details
-        final String username = extractUser(token);
-        if (username.equals(userDetails.getUsername()))&& !isTokenExpired(token)//si el nombre de usuario coincide con el nombre de usuario del userdetail
+        final String username = extractUserName(token);
+        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);//si el nombre de usuario coincide con el nombre de usuario del userdetail
 
 
     }
