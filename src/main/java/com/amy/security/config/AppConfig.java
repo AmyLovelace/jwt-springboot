@@ -30,7 +30,8 @@ public class AppConfig {
         return authProvider;
 
             //implementar el passencoder()
-        
+        //20 nov 1.38h
+
 
     }
 
