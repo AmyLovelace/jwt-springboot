@@ -31,6 +31,7 @@ public class AppConfig {
 
             //implementar el passencoder()
         //20 nov 1.38h
+        //terminar 21 nov
 
 
     }
