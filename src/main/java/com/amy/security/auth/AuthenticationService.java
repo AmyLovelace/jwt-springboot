@@ -5,6 +5,8 @@ import com.amy.security.config.JwtService;
 import com.amy.security.user.Role;
 import com.amy.security.user.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +14,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    private PasswordEncoder passwordEncoder;
-    private UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    private JwtService jwtService;
+    private final UserRepository repository;
+
+    private final JwtService jwtService;
+
+    private final AuthenticationManager authenticationManager;
 
 
 
@@ -37,8 +42,19 @@ public class AuthenticationService {
 
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword())
+        );
+        var user = repository.findByEmail(request.getEmail())
+                .orElseThrow();
 
-        return null;
+        //manejar la exception
+        var jwtToken = jwtService.generateToken(user);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
 
     }
 }
