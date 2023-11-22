@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.Filter;
 
@@ -24,10 +26,9 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        Class<? extends Filter> beforeFilterClass = (Class<? extends Filter>) Class.forName("org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter");
+        // 1. Use AuthenticationProvider instead of setFilterChainProxySecurityConfigurer
         http
-                .csrf(csrf -> csrf
-                        .disable()
+                .csrf(AbstractHttpConfigurer::disable
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -37,7 +38,9 @@ public class SecurityConfiguration {
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore((Filter) jwtAuthFilter, beforeFilterClass);
+                .addFilterBefore(jwtAuthFilter);
+
+
 
         return http.build();
     }
