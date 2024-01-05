@@ -13,3 +13,4 @@ services:
       POSTGRES_PASSWORD: root
     volumes:
     - ./:/docker-entrypoint-initdb.d
+#docker file of the database
