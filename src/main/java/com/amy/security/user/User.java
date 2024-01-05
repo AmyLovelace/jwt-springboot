@@ -15,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "_user")
+//implements UserDetails and its responsible for creating the table "users"
 public class User implements UserDetails {
 
     @Id
